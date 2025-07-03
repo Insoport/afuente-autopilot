@@ -1,6 +1,6 @@
 ---
 - name: Despliegue básico de Apache
-  hosts: all
+  hosts: localhost
   become: true
   roles:
     - apache_config
