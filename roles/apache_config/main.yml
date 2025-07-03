@@ -1,0 +1,3 @@
+- name: Mostrar usuario como debug
+  debug:
+    msg: "Usuario autenticado: {{ ansible_user }}"
