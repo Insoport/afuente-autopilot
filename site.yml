@@ -1,8 +1,4 @@
 ---
-- hosts: all
-  roles:
-    - apache_config
-
 - name: Despliegue básico de Apache
   hosts: all
   become: true
