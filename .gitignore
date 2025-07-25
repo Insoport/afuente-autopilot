@@ -1,0 +1,12 @@
+# Archivos temporales
+*.tar.gz
+*.log
+/tmp/
+*.retry
+*.pyc
+__pycache__/
+
+# Secrets y variables sensibles
+group_vars/temp_pass.yml
+*.vault
+*.key
