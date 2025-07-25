@@ -1,0 +1,18 @@
+{
+  "title": "BIOS Afuente",
+  "panels": [
+    {
+      "type": "text",
+      "title": "Frase introspectiva",
+      "content": "'{{ vault_quotes[ansible_date_time.weekday | lower] }}'",
+      "mode": "markdown"
+    },
+    {
+      "type": "graph",
+      "title": "Carga emocional del sistema (CPU)",
+      "targets": [
+        { "expr": "100 - (avg by(instance) (rate(node_cpu_seconds_total{mode=\"idle\"}[5m])) * 100)", "legendFormat": "{{instance}}" }
+      ]
+    }
+  ]
+}
