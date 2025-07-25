@@ -3,4 +3,5 @@
   hosts: all
   become: true
   roles:
+    - prometheus_grafana_bios
     - apache_config

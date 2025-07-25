@@ -1,0 +1,1 @@
+"Cada línea de código es un acto de intención"

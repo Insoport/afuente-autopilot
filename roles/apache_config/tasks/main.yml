@@ -1,18 +1,57 @@
 ---
-- name: Actualizar caché APT
+- name: Instalar Prometheus
   apt:
+    name: prometheus
+    state: present
     update_cache: yes
 
-- name: Instalar Apache
-  package:
-    name: apache2
+- name: Instalar Grafana
+  apt:
+    name: grafana
     state: present
+    update_cache: yes
 
-- name: Iniciar y habilitar Apache
-  service:
-    name: apache2
+- name: Copiar configuración de Prometheus
+  template:
+    src: prometheus.yml.j2
+    dest: /etc/prometheus/prometheus.yml
+
+- name: Copiar dashboard BIOS afuente
+  template:
+    src: grafana-dashboard.json.j2
+    dest: /var/lib/grafana/dashboards/afuente.json
+
+- name: Descargar Node Exporter
+  get_url:
+    url: https://github.com/prometheus/node_exporter/releases/download/v1.7.0/node_exporter-1.7.0.linux-amd64.tar.gz
+    dest: /tmp/node_exporter.tar.gz
+
+- name: Extraer Node Exporter
+  unarchive:
+    src: /tmp/node_exporter.tar.gz
+    dest: /opt/
+    remote_src: yes
+
+- name: Crear servicio systemd para Node Exporter
+  copy:
+    dest: /etc/systemd/system/node_exporter.service
+    content: |
+      [Unit]
+      Description=Node Exporter
+      After=network.target
+
+      [Service]
+      ExecStart=/opt/node_exporter-1.7.0.linux-amd64/node_exporter
+      Restart=always
+
+      [Install]
+      WantedBy=default.target
+
+- name: Habilitar e iniciar Node Exporter
+  systemd:
+    name: node_exporter
+    enabled: yes
     state: started
-    enabled: true
 
 - name: Mostrar usuario autenticado
   debug:
